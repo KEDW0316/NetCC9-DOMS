@@ -18,26 +18,64 @@
 <script src="/javascripts/sideInformation.js"></script>
 
 <body>
-  <div id="navbar">DongwonMap</div>
+  <div id="navbar">Dynamic Object Monitering System</div>
 
 
   <nav>
     <div class="nav-links">
+      <img class="DO-image" src="http://61.252.59.34:31014/s/WQMn7kwZKFbryM5/preview" width="100%" height="140"
+        style="margin-top:20px;">
+      <div class="DO-title">
+        <span id="DO-title">광진구 구의동 사고현장</span>
+      </div>
+      <div class="DO-information">
 
+        <div class="DO-detail">
+          <div class="DO-detail1">
+            <i class="fas fa-map-marker-alt fa-xs"></i>
+          </div>
+          <span id="DO-address">광진구 화양동 5-69</span>
+        </div>
+
+        <div class="DO-detail">
+          <div class="DO-detail1">
+            <i class="fas fa-clock fa-xs"></i>
+          </div>
+          <span id="DO-start-time">2022-05-11 발생됨</span>
+        </div>
+
+        <div class="DO-detail">
+          <div class="DO-detail1">
+            <i class="fab fa-buffer fa-xs"></i>
+          </div>
+          <span id="DO-current" style="margin-left: 7px; !important">처리 중</span>
+        </div>
+
+        <div class="DO-detail">
+          <div class="DO-detail1">
+            <i class="fas fa-info-circle fa-xs"></i>
+          </div>
+          <span id="DO-condition" style="margin-left: 5px; !important">교통 혼잡</span>
+        </div>
+      </div>
     </div>
   </nav>
 
-  <div id="infoBox">
+  <!-- <div id="infoBox">
     <div id="infoTitle">현재 날짜</div>
     <div id="infoContent">2022.07.25</div>
-  </div>
+  </div> -->
 
   <div id="search">
     <input id="search_input" placeholder="목적지를 입력해주세요" />
-    <button id="search_button">검색</button>
+    <button id="search_button">
+      <i class="fas fa-search fa"></i>
+    </button>
   </div>
 
-  <div id="current">현재 위치</div>
+  <div id="current">
+    <i class="fa fa-crosshairs fa-xs"></i>
+  </div>
 
   <div id="map" style="width:100%;height:100vh;"></div>
 
@@ -45,7 +83,7 @@
   <script type="text/javascript" src="/data/data.js"></script>
 
   <script>
-
+    // DB 쿼리 데이터 받아와서 파싱하는 부분
     var objList = "<%= JSON.stringify(objList)  %>";
     objList = objList.replaceAll('&#34;', '\"');
     objList = JSON.parse(objList);
@@ -59,6 +97,7 @@
     var map = new naver.maps.Map('map', mapOptions);
     var markerList = [];
     var infoWindowList = [];
+    var currentOpen;
 
     for (var i = 0; i < objList.length; i++) {
 
@@ -109,21 +148,34 @@
 
     function getClickHandler(i) {
       return function () {
+
         var marker = markerList[i];
         var infowindow = infoWindowList[i];
+
         var nav = document.querySelector("nav");
         var link = document.querySelector("nav .nav-links");
 
-        if (nav.classList.contains("nav-open")) {
+        var title = document.getElementById("DO-title");
+        var start_time = document.getElementById("DO-start-time");
+        var current = document.getElementById("DO-current");
+        var condition = document.getElementById("DO-condition");
+        var DO_image = document.getElementsByClassName("DO-image");
+
+        if (nav.classList.contains("nav-open") && currentOpen === i) {
           //infowindow.close();
           nav.classList.remove("nav-open");
           nav.classList.remove("fade-in");
         } else {
-
           //infowindow.open(map, marker);
+          nav.classList.add("nav-open");
+          link.classList.add("fade-in");
 
-          nav.classList.toggle("nav-open");
-          link.classList.toggle("fade-in");
+          title.innerText = objList[i].object_type;
+          start_time.innerText = objList[i].start_time;
+          current.innerText = "처리 중";
+          condition.innerText = "교통 혼잡";
+          DO_image[0].setAttribute('src', objList[i].image_path)
+          currentOpen = i;
         }
       }
     }
@@ -196,6 +248,8 @@
       }
     }
   </script>
+  <script src="https://kit.fontawesome.com/6478f529f2.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/3b5864e969.js" crossorigin="anonymous"></script>
 
 
 </body>

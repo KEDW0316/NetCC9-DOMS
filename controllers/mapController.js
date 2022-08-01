@@ -13,7 +13,7 @@ const db = async () => {
       password: "root",
       database: "sys",
     });
-    let sql = "SELECT * FROM DO2";
+    let sql = "SELECT * FROM DO3";
     let [rows, fields] = await connection.query(sql);
     objLength = rows.length;
     objList = rows;
