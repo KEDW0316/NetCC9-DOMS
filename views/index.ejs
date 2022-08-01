@@ -15,6 +15,8 @@
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/javascripts/MarkerClustering.js"></script>
+
 <script src="/javascripts/sideInformation.js"></script>
 
 <body>
@@ -23,10 +25,9 @@
 
   <nav>
     <div class="nav-links">
-      <img class="DO-image" src="http://61.252.59.34:31014/s/WQMn7kwZKFbryM5/preview" width="100%" height="140"
-        style="margin-top:20px;">
+      <img class="DO-image" src="" width="100%" height="140" style="margin-top:20px;">
       <div class="DO-title">
-        <span id="DO-title">광진구 구의동 사고현장</span>
+        <span id="DO-title"></span>
       </div>
       <div class="DO-information">
 
@@ -34,28 +35,28 @@
           <div class="DO-detail1">
             <i class="fas fa-map-marker-alt fa-xs"></i>
           </div>
-          <span id="DO-address">광진구 화양동 5-69</span>
+          <span id="DO-address">광진구 구의동 5-69</span>
         </div>
 
         <div class="DO-detail">
           <div class="DO-detail1">
             <i class="fas fa-clock fa-xs"></i>
           </div>
-          <span id="DO-start-time">2022-05-11 발생됨</span>
+          <span id="DO-start-time"></span>
         </div>
 
         <div class="DO-detail">
           <div class="DO-detail1">
             <i class="fab fa-buffer fa-xs"></i>
           </div>
-          <span id="DO-current" style="margin-left: 7px; !important">처리 중</span>
+          <span id="DO-current" style="margin-left: 7px; !important"></span>
         </div>
 
         <div class="DO-detail">
           <div class="DO-detail1">
             <i class="fas fa-info-circle fa-xs"></i>
           </div>
-          <span id="DO-condition" style="margin-left: 5px; !important">교통 혼잡</span>
+          <span id="DO-condition" style="margin-left: 5px; !important"></span>
         </div>
       </div>
     </div>
@@ -87,7 +88,7 @@
     var objList = "<%= JSON.stringify(objList)  %>";
     objList = objList.replaceAll('&#34;', '\"');
     objList = JSON.parse(objList);
-    console.log(objList);
+
 
     var mapOptions = {
       center: new naver.maps.LatLng(37.54068153336992, 127.07633168358925),
@@ -111,15 +112,9 @@
           anchor: new naver.maps.Point(12, 12),
         },
       })
-      let blob = new Blob([new ArrayBuffer(objList[i].image)], { type: "image/jpg" });
-      console.log(objList[i].image);
-      var content = `<div class='infowindow_wrap'>
-        <div class='infowindow_title'>${objList[i].image_name}</div>
-        <img src="${window.URL.createObjectURL(blob)}" width=100" height="100">
-      </div>`
-      console.log(window.URL.createObjectURL(blob));
+
       var infowindow = new naver.maps.InfoWindow({
-        content: content,
+        content: "!",
         backgroundColor: "#00ff0000",
         borderColor: "#00ff0000",
         anchorSize: new naver.maps.Size(0, 0),
@@ -135,6 +130,32 @@
       naver.maps.Event.addListener(markerList[i], "click", getClickHandler(i));
     }
 
+    const cluster1 = {
+      content: `<div class="cluster1"></div>`,
+    };
+
+    const cluster2 = {
+      content: `<div class="cluster2"></div>`,
+    }
+
+    const cluster3 = {
+      content: `<div class="cluster3"></div>`,
+    }
+
+    const MarkerClustering1 = new MarkerClustering({
+      minClusterSize: 2,
+      maxZoom: 12,
+      map: map,
+      markers: markerList,
+      disableClickZoom: false,
+      gridSize: 100,
+      icons: [cluster1, cluster2, cluster3],
+      indexGeneragor: [2, 5, 10],
+      stylingFunction: (clusterMarker, count) => {
+        $(clusterMarker.getElement()).find("div:first-child").text(count);
+      },
+
+    })
     function ClickMap(i) {
       return function () {
         var infowindow = infoWindowList[i];
@@ -176,6 +197,7 @@
           condition.innerText = "교통 혼잡";
           DO_image[0].setAttribute('src', objList[i].image_path)
           currentOpen = i;
+
         }
       }
     }
