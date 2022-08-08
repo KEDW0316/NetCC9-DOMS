@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "babel-node ./src/bin/www",
-    "start2": "node build/www.js",
-    "fuck": " ",
+    //"start": "babel-node ./src/bin/www",
+    "start": "node build/www.js",
     "dev": "nodemon --exec babel-node ./src/bin/www",
     "build": "npm run build:server && npm run build:assets",
     "build:server": "babel src -d build",
