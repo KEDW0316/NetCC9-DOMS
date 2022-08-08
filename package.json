@@ -5,6 +5,7 @@
   "scripts": {
     "start": "babel-node ./src/bin/www",
     "start2": "node build/www.js",
+    "fuck": " ",
     "dev": "nodemon --exec babel-node ./src/bin/www",
     "build": "npm run build:server && npm run build:assets",
     "build:server": "babel src -d build",
