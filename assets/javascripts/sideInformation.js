@@ -1,0 +1,1 @@
+document.querySelector("nav"),document.querySelector("nav .nav-links");
