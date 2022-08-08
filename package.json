@@ -14,11 +14,10 @@
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
-    "mysql2": "^2.3.3"
-  },
-  "devDependencies": {
+    "mysql2": "^2.3.3",
     "@babel/core": "^7.18.9",
     "@babel/node": "^7.18.9",
     "@babel/preset-env": "^7.18.9"
-  }
+  },
+  "devDependencies": {}
 }
