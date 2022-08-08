@@ -89,16 +89,33 @@
     objList = objList.replaceAll('&#34;', '\"');
     objList = JSON.parse(objList);
 
-
     var mapOptions = {
       center: new naver.maps.LatLng(37.54068153336992, 127.07633168358925),
-      zoom: 14
+      zoom: 14,
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        style: naver.maps.MapTypeControlStyle.BUTTON,
+        position: naver.maps.Position.TOP_RIGHT,
+      }
     };
 
+
+    var trafficLayer = new naver.maps.TrafficLayer({
+      interval: 300000 // 5분마다 새로고침 (최소값 5분)
+    });
+
     var map = new naver.maps.Map('map', mapOptions);
+
+    naver.maps.Event.once(map, 'init', function () {
+      trafficLayer.setMap(map);
+    });
+
     var markerList = [];
     var infoWindowList = [];
     var currentOpen;
+
+
+
 
     for (var i = 0; i < objList.length; i++) {
 

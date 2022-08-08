@@ -17,10 +17,7 @@ const db = async () => {
     let [rows, fields] = await connection.query(sql);
     objLength = rows.length;
     objList = rows;
-    console.log(rows);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };
 
 const main_map = async (req, res) => {
