@@ -23,12 +23,14 @@
     "mini-css-extract-plugin": "^2.6.1",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "websocket": "^1.0.34",
+    "ws": "^8.8.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.17.6",
     "@babel/core": "^7.18.9",
     "@babel/node": "^7.18.9",
-    "@babel/cli": "^7.17.6",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.18.9",
     "babel-loader": "^8.2.4",
