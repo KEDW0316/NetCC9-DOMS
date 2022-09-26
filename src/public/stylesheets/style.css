@@ -262,7 +262,20 @@ nav .DO-information .DO-detail .DO-detail1 {
   align-items: center; width: 20px;
 }
 
+nav #DO-delete{
+  position: absolute;
+  bottom : 10px;
+  right : 10px;
+  padding:5px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
 
+}
+
+nav #DO-delete:hover{
+  cursor: pointer;
+    background:rgba(0, 0, 0, 0.2);
+}
 /* Side DO Information Box END*/
 
 

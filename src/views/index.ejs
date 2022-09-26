@@ -60,6 +60,9 @@
           <span id="DO-condition" style="margin-left: 5px; !important"></span>
         </div>
       </div>
+      <div id="DO-delete">
+        <span>삭제</span>
+      </div>
     </div>
   </nav>
 
@@ -199,6 +202,7 @@
         var current = document.getElementById("DO-current");
         var condition = document.getElementById("DO-condition");
         var DO_image = document.getElementsByClassName("DO-image");
+        var DO_delete = document.getElementById("DO-delete");
 
         if (nav.classList.contains("nav-open") && currentOpen === i) {
           //infowindow.close();
@@ -215,6 +219,13 @@
           condition.innerText = "교통 혼잡";
           DO_image[0].setAttribute('src', objList[i].image_path)
           currentOpen = i;
+          DO_delete.addEventListener('click', function () {
+            console.log(objList[i].object_id)
+            var Socket = new WebSocket("ws://127.0.0.1:5002" + "/dbdelete");
+            Socket.onopen = function (evt) {
+              Socket.send(objList[i].object_id);
+            }
+          })
 
         }
       }
@@ -288,19 +299,44 @@
       }
     }
 
+
     var Socket = new WebSocket("ws://127.0.0.1:5002" + "/dbtrigger");
     Socket.onopen = function (evt) {
-      Socket.send("DO4");
+      Socket.send("DO3");
     }
 
     Socket.onmessage = function (evt) {
       if (evt.data) {
-        if (evt.data > 0) {
-          console.log("Object_id : " + evt.data + " is received!");
-        }
+        console.log("Object_id : " + evt.data + " is received!");
+        var newObj = evt.data.split(',')
+        objList.push({
+          object_id: newObj[0],
+          object_type: newObj[1],
+          start_time: newObj[2],
+          lat: newObj[3],
+          lng: newObj[4],
+          end_time: newObj[5],
+          image_path: newObj[6],
+        })
+        console.log(newObj);
+        var latlng = new naver.maps.LatLng(newObj[3], newObj[4])
+        marker = new naver.maps.Marker({
+          map: map,
+          position: latlng,
+          icon: {
+            content: "<div class='marker'></div>",
+            anchor: new naver.maps.Point(12, 12),
+          },
+        })
+        markerList.push(marker);
+        naver.maps.Event.addListener(map, "click", ClickMap(markerList.length - 1));
+        naver.maps.Event.addListener(markerList[markerList.length - 1], "click", getClickHandler(markerList.length - 1))
       }
     }
-
+// for (var i = 0, ii = markerList.length; i < ii; i++) {
+// naver.maps.Event.addListener(map, "click", ClickMap(i));
+// naver.maps.Event.addListener(markerList[i], "click", getClickHandler(i));
+// }
   </script>
   <script src="https://kit.fontawesome.com/6478f529f2.js" crossorigin="anonymous"></script>
   <script src="https://kit.fontawesome.com/3b5864e969.js" crossorigin="anonymous"></script>
